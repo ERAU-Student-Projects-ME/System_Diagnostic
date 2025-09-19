@@ -13,6 +13,7 @@
   <test_depend>python3-pytest</test_depend>
   
   <exec_depend>minion_diagnostic_msg</exec_depend>
+  <exec_depend>python3-pyqtgraph</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>
