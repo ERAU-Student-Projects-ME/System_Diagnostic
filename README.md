@@ -3,7 +3,7 @@
 * [colcon](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html)
 * [rosdep](https://docs.ros.org/en/humble/How-To-Guides/Building-a-Custom-Deb-Package.html#initialize-rosdep)
 
-## Initial Setuo
+## Initial Setup
 1. Create a workspace
     ```bash
     mkdir -p ros2_ws/src
@@ -25,6 +25,6 @@
 ## Run the system health monitor
 In a new terminal `Ctrl + Alt + T`, run the following command
 ```bash
-ros2 launch minion_diagnostic minion_diagnostic.launch
+ros2 launch minion_diagnostic minion_diagnostic.launch.py
 ```
 
