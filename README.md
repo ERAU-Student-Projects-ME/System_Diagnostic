@@ -12,13 +12,17 @@
 2. Clone the repo
     ```bash
     git clone https://github.com/ERAU-Student-Projects-ME/System_Diagnostic.git -b develop
-    ```  
-3. Build the packages
+    ```
+3. Check all dependencies
+   ```bash
+   cd ..
+   rosdep -i install --from-path src --rosdistro humble -y
+   ```
+5. Build the packages
     ```bash
-    cd ..
     colcon build --symlink-install --merge-install
     ```
-4. Source the workspace
+6. Source the workspace
     ```bash
     echo "source ~/ros2_ws/install/local_setup.bash" >> ~/.bashrc
     ```
