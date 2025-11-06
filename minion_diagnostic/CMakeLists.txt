@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(minion_diagnostic_msg)
+project(minion_diagnostic)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,28 +7,33 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(minion_diagnostic_msg REQUIRED)
 
-set(${PROJECT_NAME}_msgs
-  msg/SystemStatus.msg
-  msg/SystemMonitorData.msg
-  msg/NodeStatus.msg
-  msg/TopicStatus.msg
-  DEPENDENCIES builtin_interfaces
+add_executable(system_monitor_node src/monitor_nodes_topics.cpp)
+ament_target_dependencies(system_monitor_node
+  rclcpp
+  minion_diagnostic_msg
 )
 
-## Generate custom messages and services. 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${${PROJECT_NAME}_msgs}
+# Install executables
+install(
+  TARGETS system_monitor_node 
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-ament_export_dependencies(
-  builtin_interfaces
-  rosidl_default_runtime
+ament_python_install_package(${PROJECT_NAME})
+# Install Python executables
+install(PROGRAMS
+  minion_diagnostic/system_health_monitor.py
+  minion_diagnostic/systeminfo.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install( 
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

@@ -6,14 +6,14 @@ import os
 def generate_launch_description():
     systeminfo_node = Node(
                             package='minion_diagnostic',
-                            executable='systeminfo_node',
+                            executable='systeminfo.py',
                             name='systeminfo_node',
                             output='screen',
                             parameters=[]
                         )
     gui_node = Node(
                     package='minion_diagnostic',
-                    executable='system_health_monitor_node',
+                    executable='system_health_monitor.py',
                     name='system_health_monitor_node',
                     output='screen',
                     parameters=[]
