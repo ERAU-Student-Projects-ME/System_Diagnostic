@@ -1,0 +1,104 @@
+{
+  "grid_unit_size": 50,
+  "tiles": [
+    {
+      "identifier": "sensor rate table",
+      "title": "Sensors",
+      "w": 8,
+      "h": 5,
+      "color": "#1e88e5",
+      "x": 0,
+      "y": 0,
+      "widgets": [
+        {
+          "type": "table",
+          "headers": [
+            "Name",
+            "Rate"
+          ],
+          "rows": [
+            [
+              "Cam 1",
+              "int"
+            ],
+            [
+              "Cam 2",
+              "int"
+            ],
+            [
+              "LiDAR",
+              "True"
+            ],
+            [
+              "GPS",
+              "True"
+            ]
+          ],
+          "data_stream": "sensors/all"
+        }
+      ]
+    },
+    {
+      "identifier": "battery level",
+      "title": null,
+      "w": 6,
+      "h": 1,
+      "color": "#fb8c00",
+      "x": 14,
+      "y": 9,
+      "widgets": [
+        {
+          "type": "progress",
+          "choropleth": true,
+          "percent": 100,
+          "data_stream": "battery/percent"
+        }
+      ]
+    },
+    {
+      "identifier": "drone heartbeat",
+      "title": "Drone",
+      "w": 2,
+      "h": 2,
+      "color": "#333333",
+      "x": 18,
+      "y": 7,
+      "widgets": [
+        {
+          "type": "indicator",
+          "state": true
+        }
+      ]
+    },
+    {
+      "identifier": "boat heartbeat",
+      "title": "Boat",
+      "w": 2,
+      "h": 2,
+      "color": "#333333",
+      "x": 16,
+      "y": 7,
+      "widgets": [
+        {
+          "type": "indicator",
+          "state": false
+        }
+      ]
+    },
+    {
+      "identifier": "mode",
+      "title": null,
+      "w": 8,
+      "h": 2,
+      "color": "#222222",
+      "x": 12,
+      "y": 0,
+      "widgets": [
+        {
+          "type": "mode",
+          "value": "none"
+        }
+      ]
+    }
+  ]
+}
