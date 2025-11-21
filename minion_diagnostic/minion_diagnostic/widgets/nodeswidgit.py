@@ -1,42 +1,24 @@
 '''
-Control Node
-Path Planer Node
-YOLO Node
-GBCACHE
-Mapper
-ROIS(Fusion)
-
-What we need for each node:
-Label
-Widget type LED or light up text bar
-Status color
-
+Nodes Widgit: Control Node, Path Planner Node, YOLO Node, GBCACHE, Mapper, ROIS(Fusion)
+For Each Node -> Label, Widget Type, Status Color [Binary; Is it delivering data? Yes or No]
 '''
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QLabel, QHBoxLayout,
-    QVBoxLayout, QFrame
-)
-from PyQt6.QtGui import QColor, QPalette
-from PyQt6.QtCore import Qt
+
 import sys
-
-
+from PyQt6.QtCore import Qt, pyqtSignal, QObject
+from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QHBoxLayout,
     QVBoxLayout, QFrame, QGridLayout
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QObject
-import sys
-
 
 class NodeStatusWidget(QWidget):
-    """Node widget where the label background changes color."""
+    # Node Widget
     def __init__(self, node_name: str):
         super().__init__()
 
         self.label = QLabel(node_name)
 
-        # Smaller padding + bold text
+        # Small Padding + Bold Text
         self.label.setContentsMargins(5, 3, 5, 3)
         self.label.setStyleSheet("""
             border-radius: 4px;
@@ -45,21 +27,20 @@ class NodeStatusWidget(QWidget):
             font-weight: bold;
         """)
 
+        # Small Margins 
         layout = QHBoxLayout()
-        layout.setContentsMargins(2, 2, 2, 2)  # smaller outer margins
+        layout.setContentsMargins(2, 2, 2, 2)
         layout.addWidget(self.label)
         self.setLayout(layout)
 
-        # Integer → color mapping
+        # Background Color Options: Green(Yes,1) or Red(No,2)
         self.status_map = {
-            1: "green",   # ok
-            2: "yellow",  # warning
-            3: "red",     # error
-            4: "gray"     # offline
+            1: "green",
+            2: "red",
         }
 
     def set_status_from_code(self, code: int):
-        """Apply background color based on status code."""
+        # Apply Background Color Using Status Code
         color = self.status_map.get(code, "gray")
         self.label.setStyleSheet(f"""
             border-radius: 4px;
@@ -73,8 +54,8 @@ class NodeStatusBridge(QObject):
     status_update = pyqtSignal(str, int)
 
 
+# Main Node Widget; all nodes in a 3x2 grid
 class NodePanel(QWidget):
-    """Main widget containing all nodes in a 3x2 grid."""
     def __init__(self):
         super().__init__()
 
@@ -89,9 +70,9 @@ class NodePanel(QWidget):
 
         self.nodes = {name: NodeStatusWidget(name) for name in self.node_names}
 
-        # ---------- 3x2 Grid Layout ----------
+        # 3x2 Grid Layout
         layout = QGridLayout()
-        layout.setSpacing(8)  # tighter spacing between boxes
+        layout.setSpacing(8)
 
         rows = 2
         cols = 3
@@ -105,15 +86,15 @@ class NodePanel(QWidget):
 
         self.setLayout(layout)
 
-        # Signal bridge
+        # Signal Bridge
         self.bridge = NodeStatusBridge()
         self.bridge.status_update.connect(self.update_node_from_signal)
 
-        # Demo statuses
+        # Demo Statuses
         self.nodes["Control Node"].set_status_from_code(1)
         self.nodes["Path Planner Node"].set_status_from_code(2)
-        self.nodes["YOLO Node"].set_status_from_code(3)
-        self.nodes["GBCACHE"].set_status_from_code(4)
+        self.nodes["YOLO Node"].set_status_from_code(1)
+        self.nodes["GBCACHE"].set_status_from_code(2)
         self.nodes["Mapper"].set_status_from_code(1)
         self.nodes["ROIS (Fusion)"].set_status_from_code(1)
 
@@ -121,11 +102,9 @@ class NodePanel(QWidget):
         if node_name in self.nodes:
             self.nodes[node_name].set_status_from_code(status_code)
 
-# Change the status of a node by doing self.node["YOLO Node"].set_status_from_code(#(1-4))
+# Change the status of a node by doing self.node["YOLO Node"].set_status_from_code(#(1-2))
 # 1 is green working
-# 2 is yellow warning
-# 3 is red error
-# 4 is gray offline
+# 2 is red not working
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -136,4 +115,3 @@ if __name__ == "__main__":
     window.show()
 
     sys.exit(app.exec())
-
