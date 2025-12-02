@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPainter, QPen, QColor
 from PyQt6.QtCore import Qt, QRect, QSize, QRectF
+import math
 
 class BatteryWidget(QWidget):
     def __init__(self, parent = None):
@@ -84,30 +85,35 @@ class BatteryWidget(QWidget):
         segment_height = battery_height - 2 * spacing
 
         #calculate bars to percentage
-        filled_segments = int((self.percentage / 100) * segment_count)
+        if self.percentage == 0:
+            filled_segments = 0
+        else:
+            filled_segments = math.ceil((self.percentage / 100) * segment_count)
 
-        #loop for 5 segments
+        # Determine bar color from percentage
+        if self.percentage > 60:
+            fill_color = QColor(70, 200, 70)      # green
+        elif self.percentage > 30:
+            fill_color = QColor(255, 255, 0)      # yellow
+        elif self.percentage > 0:
+            fill_color = QColor(255, 0, 0)        # red
+        else:
+            fill_color = QColor(200, 200, 200)    # gray
+
+
+        # Draw segments
         for i in range(segment_count):
 
-            # X position of each segment
             x_pos = battery_x + spacing + (segment_width + spacing) * i
-            # Y position (vertical centering inside the battery)
             y_pos = battery_y + spacing
-
-            # Rectangle for this segment
             segment_rectangle = QRectF(x_pos, y_pos, segment_width, segment_height)
 
-            # If this segment is "filled", draw green; otherwise draw gray
             if i < filled_segments:
-                #Filled = green
-                painter.setBrush(QColor(70, 200, 70))
+                painter.setBrush(fill_color)
             else:
-                #Empty = light gray
                 painter.setBrush(QColor(200, 200, 200))
 
-            # Draw the segment rectangle
-            painter.drawRect(segment_rectangle)     
-
+            painter.drawRect(segment_rectangle)
 #---------------------
 #DEMO APPLICATION TEST
 if __name__ == "__main__":
@@ -118,7 +124,7 @@ if __name__ == "__main__":
 
     # Create battery widget instance using example values
     battery = BatteryWidget()
-    battery.setPercentage(80)
+    battery.setPercentage(5)
     battery.setVoltage(12)
     battery.show()
 
