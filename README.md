@@ -18,11 +18,19 @@
    cd ..
    rosdep -i install --from-path src --rosdistro humble -y
    ```
-5. Build the packages
+4. Build the packages
     ```bash
     colcon build --symlink-install --merge-install
     ```
-6. Source the workspace
+   **Note:** If you run into error while building, open the `.bashrc` script and confirm that, the ROS2 bash file is sourced.
+   ```bash
+   gedit ~/.bashrc
+   # Scroll down in the script and look for the following line:
+   # source /opt/ros/humble/setup.bash
+   ``` 
+   If the ROS2 bash file is not sourced, add it and save it. Close the `.bashrc` script, and any open terminal. Open a new terminal and retry building the packages.
+
+5. Source the workspace
     ```bash
     echo "source ~/ros2_ws/install/local_setup.bash" >> ~/.bashrc
     ```
